@@ -1,0 +1,1203 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled0.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyN56B2pkftbUvlxJo/UWt92",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Abhishek264/ml-bootcamp/blob/main/ml%20day3\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "mX2T7w2gam8n"
+      },
+      "source": [
+        "import pandas as pd\n",
+        "import numpy as np\n",
+        "import matplotlib.pyplot as plt\n",
+        "import seaborn as sns"
+      ],
+      "execution_count": 1,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 840
+        },
+        "id": "0b9jt7kBda0L",
+        "outputId": "409f35f3-9666-4484-9e7f-44e133651436"
+      },
+      "source": [
+        "data=pd.read_csv(\"/content/ipl_matches.csv\")\n",
+        "data"
+      ],
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>id</th>\n",
+              "      <th>season</th>\n",
+              "      <th>city</th>\n",
+              "      <th>date</th>\n",
+              "      <th>team1</th>\n",
+              "      <th>team2</th>\n",
+              "      <th>toss_winner</th>\n",
+              "      <th>toss_decision</th>\n",
+              "      <th>result</th>\n",
+              "      <th>dl_applied</th>\n",
+              "      <th>winner</th>\n",
+              "      <th>win_by_runs</th>\n",
+              "      <th>win_by_wickets</th>\n",
+              "      <th>player_of_match</th>\n",
+              "      <th>venue</th>\n",
+              "      <th>umpire1</th>\n",
+              "      <th>umpire2</th>\n",
+              "      <th>umpire3</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>1</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Hyderabad</td>\n",
+              "      <td>2017-04-05</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>35</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Yuvraj Singh</td>\n",
+              "      <td>Rajiv Gandhi International Stadium, Uppal</td>\n",
+              "      <td>AY Dandekar</td>\n",
+              "      <td>NJ Llong</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>2</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Pune</td>\n",
+              "      <td>2017-04-06</td>\n",
+              "      <td>Mumbai Indians</td>\n",
+              "      <td>Rising Pune Supergiant</td>\n",
+              "      <td>Rising Pune Supergiant</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Rising Pune Supergiant</td>\n",
+              "      <td>0</td>\n",
+              "      <td>7</td>\n",
+              "      <td>SPD Smith</td>\n",
+              "      <td>Maharashtra Cricket Association Stadium</td>\n",
+              "      <td>A Nand Kishore</td>\n",
+              "      <td>S Ravi</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>3</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Rajkot</td>\n",
+              "      <td>2017-04-07</td>\n",
+              "      <td>Gujarat Lions</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>0</td>\n",
+              "      <td>10</td>\n",
+              "      <td>CA Lynn</td>\n",
+              "      <td>Saurashtra Cricket Association Stadium</td>\n",
+              "      <td>Nitin Menon</td>\n",
+              "      <td>CK Nandan</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>4</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Indore</td>\n",
+              "      <td>2017-04-08</td>\n",
+              "      <td>Rising Pune Supergiant</td>\n",
+              "      <td>Kings XI Punjab</td>\n",
+              "      <td>Kings XI Punjab</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Kings XI Punjab</td>\n",
+              "      <td>0</td>\n",
+              "      <td>6</td>\n",
+              "      <td>GJ Maxwell</td>\n",
+              "      <td>Holkar Cricket Stadium</td>\n",
+              "      <td>AK Chaudhary</td>\n",
+              "      <td>C Shamshuddin</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>5</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Bangalore</td>\n",
+              "      <td>2017-04-08</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Delhi Daredevils</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>bat</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>15</td>\n",
+              "      <td>0</td>\n",
+              "      <td>KM Jadhav</td>\n",
+              "      <td>M Chinnaswamy Stadium</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>...</th>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>631</th>\n",
+              "      <td>632</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Raipur</td>\n",
+              "      <td>2016-05-22</td>\n",
+              "      <td>Delhi Daredevils</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>0</td>\n",
+              "      <td>6</td>\n",
+              "      <td>V Kohli</td>\n",
+              "      <td>Shaheed Veer Narayan Singh International Stadium</td>\n",
+              "      <td>A Nand Kishore</td>\n",
+              "      <td>BNJ Oxenford</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>632</th>\n",
+              "      <td>633</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Bangalore</td>\n",
+              "      <td>2016-05-24</td>\n",
+              "      <td>Gujarat Lions</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>0</td>\n",
+              "      <td>4</td>\n",
+              "      <td>AB de Villiers</td>\n",
+              "      <td>M Chinnaswamy Stadium</td>\n",
+              "      <td>AK Chaudhary</td>\n",
+              "      <td>HDPK Dharmasena</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>633</th>\n",
+              "      <td>634</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Delhi</td>\n",
+              "      <td>2016-05-25</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>22</td>\n",
+              "      <td>0</td>\n",
+              "      <td>MC Henriques</td>\n",
+              "      <td>Feroz Shah Kotla</td>\n",
+              "      <td>M Erasmus</td>\n",
+              "      <td>C Shamshuddin</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>634</th>\n",
+              "      <td>635</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Delhi</td>\n",
+              "      <td>2016-05-27</td>\n",
+              "      <td>Gujarat Lions</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>0</td>\n",
+              "      <td>4</td>\n",
+              "      <td>DA Warner</td>\n",
+              "      <td>Feroz Shah Kotla</td>\n",
+              "      <td>M Erasmus</td>\n",
+              "      <td>CK Nandan</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>635</th>\n",
+              "      <td>636</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Bangalore</td>\n",
+              "      <td>2016-05-29</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>bat</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>8</td>\n",
+              "      <td>0</td>\n",
+              "      <td>BCJ Cutting</td>\n",
+              "      <td>M Chinnaswamy Stadium</td>\n",
+              "      <td>HDPK Dharmasena</td>\n",
+              "      <td>BNJ Oxenford</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "<p>636 rows × 18 columns</p>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "      id  season       city  ...          umpire1          umpire2 umpire3\n",
+              "0      1    2017  Hyderabad  ...      AY Dandekar         NJ Llong     NaN\n",
+              "1      2    2017       Pune  ...   A Nand Kishore           S Ravi     NaN\n",
+              "2      3    2017     Rajkot  ...      Nitin Menon        CK Nandan     NaN\n",
+              "3      4    2017     Indore  ...     AK Chaudhary    C Shamshuddin     NaN\n",
+              "4      5    2017  Bangalore  ...              NaN              NaN     NaN\n",
+              "..   ...     ...        ...  ...              ...              ...     ...\n",
+              "631  632    2016     Raipur  ...   A Nand Kishore     BNJ Oxenford     NaN\n",
+              "632  633    2016  Bangalore  ...     AK Chaudhary  HDPK Dharmasena     NaN\n",
+              "633  634    2016      Delhi  ...        M Erasmus    C Shamshuddin     NaN\n",
+              "634  635    2016      Delhi  ...        M Erasmus        CK Nandan     NaN\n",
+              "635  636    2016  Bangalore  ...  HDPK Dharmasena     BNJ Oxenford     NaN\n",
+              "\n",
+              "[636 rows x 18 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 2
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "TbI52X0jdl68",
+        "outputId": "f32835fa-d832-4e2a-c0e1-c8adf57bd6d4"
+      },
+      "source": [
+        "data.shape"
+      ],
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(636, 18)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 4
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "QWBPudqDduU7",
+        "outputId": "c66c9eea-3363-4d38-af66-e1163c15105f"
+      },
+      "source": [
+        "data.isnull().sum()"
+      ],
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "id                   0\n",
+              "season               0\n",
+              "city                 7\n",
+              "date                 0\n",
+              "team1                0\n",
+              "team2                0\n",
+              "toss_winner          0\n",
+              "toss_decision        0\n",
+              "result               0\n",
+              "dl_applied           0\n",
+              "winner               3\n",
+              "win_by_runs          0\n",
+              "win_by_wickets       0\n",
+              "player_of_match      3\n",
+              "venue                0\n",
+              "umpire1              1\n",
+              "umpire2              1\n",
+              "umpire3            636\n",
+              "dtype: int64"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 5
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 359
+        },
+        "id": "ALl_kp4peTbF",
+        "outputId": "fa2d71c8-f5c4-47a9-c693-31600618d7a5"
+      },
+      "source": [
+        "sns.heatmap(data.isnull(),cmap=\"Blues\")"
+      ],
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "<matplotlib.axes._subplots.AxesSubplot at 0x7fd03c84cb90>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 6
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "iVBORw0KGgoAAAANSUhEUgAAAWYAAAFFCAYAAADfHkeOAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAALEgAACxIB0t1+/AAAADh0RVh0U29mdHdhcmUAbWF0cGxvdGxpYiB2ZXJzaW9uMy4yLjIsIGh0dHA6Ly9tYXRwbG90bGliLm9yZy+WH4yJAAAgAElEQVR4nO2dd9wdVbWGnzcJ0puC5VIEqSJNukpHpIhgAQEBpShXBMUu6hUQr/cK2GiiSBEVRUS5RqSIShWBUELoGAEhiGKhSg2894+9TzI5OWVOy5nvfOvJb345M7PX3vtra/asvYpsEwRBEFSHCcOeQBAEQTAnoZiDIAgqRijmIAiCihGKOQiCoGKEYg6CIKgYoZiDIAgqxsAUs6TtJd0labqkwwY1ThAEwTCRdLqkhyXd2uS+JB2fdeE0Seu163MgilnSROAkYAdgDWBPSWsMYqwgCIIh8z1g+xb3dwBWyceBwMntOhzUinkjYLrte2w/B5wN7DKgsYIgCIaG7SuAf7VosgvwfSeuAZaQ9KpWfQ5KMS8DPFA4n5GvBUEQjDc61oeTBjqdFkg6kLSs58RvfWf9Az5w4LCmEgTBPGbJDQ/pWvbpm05Ur+Mv+PpDSueieGbqSf9J1lWZU2yf0uscWjEoxfwgsFzhfNl8bRb5CzsF4JmZRMKOIAjmHSpvLCjqqi5pqw/rGZQpYwqwiqQVJb0E2AOYPKCxgiAIOkMqf/TOZOC92TtjE+Ax2w+1EhjIitn2TEmHABcDE4HTbd82iLGCIAg6poMVc9uupB8DWwJLSZoBHAHMB2D728AFwI7AdOApYL92fQ7Mxmz7gjyhIAiCatGflTAAtvdsc9/AwZ30ObTNvyAIgqExYeKwZ9CSUMxBEIw/+mjKGARdz07SApKuk3SzpNskfTFfPySHHlrSUv2bahAEQZ+Yt5t/HdPLivlZYGvbT0qaD7hK0oXA74Hzgcv6ML8gCIL+U/EVc9eKORu0n8yn8+XDtm8C0JCeNEEQBG2puH7q6bEhaaKkqcDDwCW2r+3PtIIgCAaIJpQ/hkBPo9p+wfa6pEiWjSStWVZW0oGSrpd0/WnfHWh0YxAEwZxMmFj+GAJ98cqw/aikS0mp7xrmJG0gEyHZQRAMh4rbmHvxylha0hL584LAtsCd/ZpYEATBwJig8scwpteD7KuASyVNI+XGuMT2+ZI+ksMSlwWmSTq1HxMNgiDoGxW3MffilTENeH2D68cDx/cyqSAIgoFSca+MiPwLgmD8ESHZQRAEFaPim389Kea8+XcqsCZgYH/gncDbgOeAPwH72X60x3kGQRD0j4qbMnp9bBwHXGR7dWAd4A7gEmBN22sDdwOf7XGMIAiC/lLxzb9e3OUWBzYHTgOw/ZztR23/2vbM3OwakndGEARBdah4EqNeHgcrAn8HzpB0k6RTJS1c12Z/4MJGwhH5FwTB0Kj4irkXG/MkYD3gw7avlXQccBjwBQBJnwdmAmc1Eo7IvyAIhkbFvTJ6eRzMAGYUEhedS1LUSNoX2AnYK2ehC4IgqA4VXzF3PartvwIPSFotX9oGuF3S9sCngZ1tP9WHOQZBEPSXituYe/Vj/jBwlqSXAPeQqr9OAeYHLsk5ma+x/cEexwmCIOgfo+zHbHsqsEHd5ZV76TMIgmDgVNyPOSL/giAYf1R8xdxrBZNDJd2ai7F+NF/7kqRpkqZK+rWk/+jPVIMgCPqDJkwofQyDXgJM1gQ+AGxEivrbSdLKwLG2186VTc4HDu/LTIMgCPqEpNLHMOjlcfBa4FrbT+VIv8uBd9p+vNBmYQgf5SAIKoY6OIZALzbmW4EvS3oZ8DSwI3A9gKQvA+8FHgO26nWSQRAE/WRYK+Gy9OLHfAdwNPBr4CJgKvBCvvd528uRov4OaSQfIdlBEAyLqpsyenWXO42cxEjS/5CiAYucBVwAHNFANkKygyAYChOGtKlXll69Ml6e/1+elIf5R5JWKTTZhSjQGgRB1RhhGzPAz7KN+XngYNuPSjoth2m/CPwZiKi/IAgqRdVtzL2aMjZrcO1dvfQZBEEwaEZaMQdBEIxFQjEHQRBUjKor5rabf5JOl/SwpFsL146VdGcOvT4vF2Utyiwv6UlJnxzEpIMgCHpBE1T6GAZlvDK+B2xfd61dwdWv06SkVBAEwbDppx+zpO0l3SVpuqTDGtxfXtKluQTfNEk7tuuzrWK2fQXwr7prTQuuSno7cC9wW7u+gyAIhkG/FLOkicBJwA7AGsCektaoa/ZfwDm2Xw/sAXyr3fz64WU9q+CqpEWAzwBfbCcUkX9BEAyN/vkxbwRMt32P7eeAs0nxG0UMLJY/Lw78pV2nPW3+NSi4eiTwDdtPtnvSRORfEATDopPNP0kHAgcWLp2S9RfAMsADhXszgI3rujgS+LWkD5MSu7253ZhdK+ZCwdVtCgVXNwZ2lXQMsATwoqRnbJ/Y7ThBEAT9phPFXFxEdsmewPdsf03SG4AfSFrT9ovNBLpSzIWCq1sUC64WA04kHQk8GUo5CIKq0cdcGQ8CyxXOl83XihxAdqCw/QdJCwBLAQ83nV+7USX9GPgDsJqkGZIOAE4EFiUVXJ0q6dudfCVBEARDpX825inAKpJWzEWp9wAm17W5H9gGQNJrgQWAv7fqtO2K2faeDS6fVkLuyHZtgiAIhkG/Akxsz5R0CHAxMBE43fZtko4Crrc9GfgE8F1JHyNtBO5bMP82JCL/giAYd/Qz8s/2BaT0xsVrhxc+3w68qZM+u438O1LSg9mMMbXmMC1pBUlPF66HiSMIgsoxConyv0eyKX+/7vo3bH+1Qfs/5UKsQRAElWRYodZlKWNjvkLSCoOfShAEwbxhzCcxasEhOe77dElLFq6vmGPCL5c0V77mIAiCYVN1U0a3ivlkYCVgXeAh4Gv5+kPA8jkm/OOkUlOLNeogQrKDIBgWVVfMXXll2P5b7bOk7wLn5+vPAs/mzzdI+hOwKnB9gz4iJDsIguFQbUtGdytmSa8qnL4DuDVfXzpnW0LSa4BVgHt6nWQQBEE/GfMr5hz5tyWwlKQZwBHAlpLWJTlL3wf8Z26+OXCUpOdJxVg/aPtfc3UaBEEwRCaMgFdG6cg/2z8DftbrpIIgCAZJ1b0yIvIvCIJxR8X1cijmIAjGH1VfMXcbkr2upGty2PX1kjYq3NsyX79N0uWDmngQBEG3SOWPYdBtMdZjgC/m0OvD8zlK1bK/Bexs+3XAbv2bahAEQX+YMEGlj2HQbUh2sxpW7wF+bvv+LNs0EXQQBMGwGPNeGU34KHCxpK+SVt1vzNdXBeaTdBkpkf5xtuuTHwVBEAyVipuYuw7JPgj4mO3lgI8x231uErA+8FZgO+ALklZt1EGEZAdBMCzGfIBJE94HHJo//xQ4NX+eAfzT9r+Bf0u6AlgHuLu+gwjJDoJgWIx5r4wm/AXYIn/eGvhj/vwLYFNJkyQtRKqafUdvUwyCIOgvVffK6DYk+wPAcZImAc8ABwLYvkPSRcA0Ukj2qbZvbdhxEATBkBjzm39NQrIh2ZIbtT8WOLaXSQVBEAySqpsyIvIvCIJxR8X1cijmIAjGH1VfMZcJyV5O0qWSbs9h1ofm67vl8xclbVBov1ehSvbUfD+KswZBUBnG/OYfMBP4hO0bJS0K3CDpElJy/HcC3yk2tn0WcBaApLWA/7M9tb/TDoIg6J6qr5jLbP49RKrlh+0nJN0BLGP7Emj7Be4JnN2HeQZBEPSNqntldOTHnHNmvB64tqTI7sCPm/QVkX9BEAyFUTBlACBpEVJ1ko/afrxE+42Bp5r5MUfkXxAEw2LMmzIAJM1HUspn2f55yb73oMlqOQiCYJhUXC+XivwTKUnRHba/XqZTSROAdwOb9Ta9IAiC/jMKK+Y3AfsAt0iqeVd8DpgfOAFYGviVpKm2t8v3NwcesH1PvyccBEHQK2NeMdu+Cmj2VZzXROYyYJPupxUEQTA4qu6VEZF/QRCMOyq+YO4+8q9w/xOSLGmpfL64pF9Kujm3329Qkw+CIOiGUUiU3zDyz/btkpYD3gLcX2h/MHC77bdJWhq4S9JZtp/r//SDIAg6Z8yvmG0/ZPvG/PkJUuL7ZfLtbwCfhjn8kA0smr05FgH+RVLuQRAElWCCVPpoh6TtJd0labqkw5q0eXfB6vCjdn12ZGMuRv5J2gV40PbNdcv9E4HJpConiwK7236xk3GCIAgGSb82/yRNBE4CtiWV1psiabLt2wttVgE+C7zJ9iOSXt52fh1MYFbkH2kF/Dng8AZNtwOmAv8BrAucKGmxBv1FSHYQBENhgsofbdgImG77nmyuPRvYpa7NB4CTbD8CYPvhdp12FfmXs8atCNRWy8sCN0raCNgP+IptA9Ml3QusDlxX7DNCsoMgGBZ93NRbBnigcD6DVOu0yKp5zN8DE4EjbV/UqtOuIv9s3wK8vNDmPmAD2/+QdD+wDXClpFcAqwERaBIEQWXoRC9LOpBc1zRzSl5YlmUSsAqpduqywBWS1rL9aCuBdjSM/LN9QZP2XwK+J+kWUmDKZ2z/o+QXEARBMHDUNGZubopv9w14EFiucL5svlZkBnCt7eeBeyXdTVLUU5qN2WvkX63NCoXPfyG50AVBEFSSPgb+TQFWkbQiSSHvAbynrs3/kXLTn5HjPValjRUhIv+CIBh39Msrw/ZMSYcAF5Psx6fbvk3SUcD1tifne2+RdDvwAvAp2/9s1W8o5iAIxh1l/JPLks26F9RdO7zw2cDH81Fufu0atCjG+pNCwdX7avZnSS+RdIakW3JY9pZlJxMEQTAvGIUKJs1CsnevNZD0NeCxfPoBANtrZUfqCyVtGEEmQRBUhaqn/ew1JLvmTvduZlcrWQP4XW7/MPAosEF/px0EQdA9VV8x96MY62bA32z/MZ/fDOwsaVLeqVyfOd1Jan1F5F8QBENholT6GAb9KMa6J3PW9jsdeC1wPfBn4GrSTuQcRORfEATDouqmjJ6KsUqaBLyTtCoGkvsI8LFCm6uBu/s14SAIgl6peAGTnouxvhm40/aMQvuFANn+t6RtgZnFTEtBEATDZhRWzK1CsvdgTjMGpBwaF0t6kRQJs0+/JhsEQdAPKq6XewvJtr1vg2v3kRIXBUEQVJJRWDEHQRCMFBMrbmQuE/m3gKTrCsVVv5ivH5JLqcwqxJqvS9Lx+d40SesN8gsIgiDoFHVwDIMyK+Znga1tP5m9M66SdCHwe+B84LK69juQUtqtQkoYfTJzJ44OgiAYGv3MlTEIytiYDTyZT+fLh23fBA1tNbsA389y10haQtKrbD/Uv2kHQRB0T8X1crnIP0kTs0fGw8Altq9t0bxRqZVlmrQNgiCY50gqfQyDUorZ9gu21yVl599I0pq9Dhwh2UEQDIuq58royCvD9qOSLgW2B25t0qxMqZUIyQ6CYGiMglfG0pKWyJ8XBLYF7mwhMhl4b/bO2AR4LOzLQRBUiVEwZbwKuFTSNFJ9q0tsny/pI5JmkFbE0ySdmttfQKpnNR34LvChAcw7CIKgayZ0cAyDMl4Z00ipPuuvHw8c3+C6gYP7MrsgCIIBEJF/QRAEFaPiJuZQzEEQjD9GYfOvYUh24f7xkp4snG8u6UZJMyXtOohJB0EQ9MIElT+GQdch2bavkbQBsGRd+/uBfYFP9neqQRAE/aHiJubuQ7IlTQSOBd4DvKPQ/j6AnI85CIKgclQ9V0YvIdmHAJPDRzkIgrFG1d3lug3J3hzYDTih24EjJDsIgmExqiHZWwErA9OzP+BCkqbbXrmDviIkOwiCoVB1r4wyxViXBp7PSrkWkn207VcW2jzZiVIOgiAYJhXXy6VWzK8CzsybfROAc2yf36yxpA2B80jeGm+T9EXbr+vLbIMgCPpA1Tf/ug7JrmuzSOHzFJItOgiCoJJUXC9H5F8QBOOPUTBlBEEQjBQaWpnVcpTZ/FsAuAKYP7c/1/YRkq4EFs3NXg5cZ/vtkvYCPkMqMPsEcJDtmwcy+yAIgi6YNCwH5ZL0EpK9Wa2BpJ8Bv8in9wJb2H5E0g4kl7iokh0EQWUY82k/m4Vk1+5LWgzYGtgvt7+6IH4NsREYBEHFqLqNuR9Vst8O/Nb24w1EDwAubNJnRP4FQTAU+hn5J2l7SXdJmi7psBbt3iXJOflbS0pt/tl+AVg31/47T9KatmvFWPcETq2XkbQVSTFv2qTPiPwLgmAo9MuPOcd3nEQKvJsBTJE02fbtde0WBQ4Frp27lwbz62QSth8FalWykbQUsBHwq7pJrE1S1rvY/mcnYwRBEAyaiRPKH23YCJhu+x7bzwFnA7s0aPcl4GjgmTLz67VK9q7A+bafKbRfHvg5sI/tu8tMIgiCYF4yAZU+imbXfBxY6GoZ4IHC+Yx8bRaS1gOWsz3HArYVvYZk7wF8pa794cDLgG/lnc+ZttvaVIIgCOYVnVgyimbXzsfRBODrpOIhpekpJNv2lg2uvR94fyeTCIIgmJf00SvjQWC5wvmy+VqNRYE1gcvyQvWVwGRJO9u+vlmnEfkXBMG4o49JjKYAq0hakaSQ9yBVdQLA9mPAUrVzSZcBn2yllKGDzb/sMneTpPPz+YqSrs0uIj+R9JJ8/YOSbpE0VdJVktbo4IsMgiAYOP1yl7M9k1TN6WLgDpKp9zZJR0naudv5dbJiPjQPvFg+Pxr4hu2zJX2b5Bp3MvAj298GyBP7OtmLIwiCoAr0M1G+7QuAC+quHd6k7ZZl+iwbYLIs8Fayv7KSsWRr4Nzc5ExSoAl1gSYLQ/goB0FQLape86/sivmbwKeZnbToZcCjeRkPdS4ikg4GPg68hKTAgyAIKkPVc2WU8WPeCXjY9g1lO7V9ku2VSFnm/qtJvxGSHQTBUFAHxzAos2J+E7CzpB2BBUg25uOAJSRNyqvmeheRGmeT7M5zESHZQRAMi6qXlmq7Yrb9WdvL2l6B5AryO9t7kUKzd83N3kdO+ylplYL4W4E/9nXGQRAEPTIKK+ZmfAY4W9J/AzcBp+Xrh0h6M/A88AhJaQdBEFSGCRXP+9mRYrZ9GXBZ/nwPKYFHfZtD+zGxIAiCQVHxAiYR+RcEwfij6l4ZoZiDIBh3VFst9xaSfZqkmyVNk3SupEXq2pfO1h8EQTAvkVT6GAadmFpqIdk1PmZ7HdtrA/eT4sWBzrP1B0EQzEsmSqWPYdBVSDbMDr3O4dkLMmfodUfZ+oMgCOYlVXeXK7tiroVkv1i8KOkM4K/A6sAJ+VqpbP0R+RcEwbDoZzHWQdB2868Yki1py+I92/vlyiYnALtLOpOS2foj8i8IgmExoeLbf2VWzLWQ7PtIIdZbS/ph7WauoH028C7mzNZ/H7AJKVt/bAAGQVAZqr5i7iokG9hH0sowy8a8M3Cn7cdsL2V7hdz+GqBlCZUgCIJ5jTr4Nwy69WMWqUDrYvnzzcBBfZtVEATBABmWt0VZug7JJpk42rXfsuMZBUEQDJiK6+WI/AuCYPxRdcXcS+SfJH1Z0t2S7pD0kXx9S0mP5WKsUyU1rH0VBEEwLEbJxlxfjHVfYDlgddsvSnp5oe2VtnfqzxSDIAj6S8WzfpZTzIXIvy+TavlB2ux7j+0XAWw/PJAZDpAlNzykfaMGPDLlxD7PJAiCeUnVK5h0W4wVYCVSUMk7gL8DH7Fdq1byBkk3A38BPmn7tn5NuJ+Egg2C8cmwTBRl6SXyb37gGdsbSHoncDqwGXAj8GrbT+Y6gf8HrNKg3wOBAwFO/NZ3OOADB/b8xXRKrJiDYHxSdVOG7NbR0JL+F9gHmMnsYqw/BzYAdrB9bw4yedT24g3k7wM2sP2PZmNESHYQjC+6XRQBPH3TiT2r1SvvfqS0ztls1SXnuRpvu2K2/Vngs5A8Lkimib0lfQXYCrgX2AK4O7d5JfA325a0Ecnz45+DmX5v9PLLEavmIBi7VNzE3JMf81eAsyR9DHgSeH++vitwkKSZwNPAHm63LB8SoVyDYHxScb3cUzHWR0meGvVtTgRC4wVBUFlGKiQ7CIJgJKi2Xg7FHATB+KPq7nK9hGRvLelGSbdKOlPSpELbLXM49m2SLh/ExIMgCLplzOdjLjCrGKukCcCZpI29NYE/A+/L95YAvkXKw/w6YLe+zjgIgqBHRqLmX4NirC8DnrN9dz6/hFTBBOA9wM9t3w9jM1Q7CIIRp+KaudtirP8AJhVKRu1KSmgEsCqwpKTLJN0g6b19m20QBEEfmCCVPoYyv3YNiiHZtWvZL3kP4BuSrgOeAF7ItycB65NW2NsBX5C0aoN+o0p2EARDoZ8LZknbS7pL0nRJhzW4/3FJt0uaJum3kl7drs8yXhm1Yqw7kkOyJf3Q9t6k3BhIegtppQwwA/in7X8D/5Z0BbAOOTKwRlTJDoJgaPRpISxpInASsC1J902RNNn27YVmN5HSUjwl6SDgGGD3Vv12VYw1h2S/PE9sfuAzwLezyC+ATSVNkrQQsDF50zAIgqAK9DFR/kbAdNv32H4OOBvYpdjA9qW2n8qn1wDLtuu0Fz/mT2UzxwTgZNu/y5O4Q9JFwDSSTfpU27f2ME4QBEFf6aPpeBnggcL5DNJitBkHABe267SXkOxPAZ9q0u5Y4NhO+g6CIJhXdKKYiymKM6dkU2yHY2pvUlbOLdq1jci/IAjGHZ1E/hX3wxrwILM90iCZKR6cazzpzcDngS1sP9tuzE4CTIIgCEaCPkb+TQFWkbSipJeQ9uEmzzmWXg98hxR0Vyquo2yAyX2Sbslh1tfna8dKujO7gJyXI/6QtFehQvZUSS9KWrfMOEEQBPOCfrnL2Z4JHAJcTHJyOMf2bZKOkrRzbnYssAjw06wTJzfpbvb8yqRKblSFJLvI/c72TElH50l+pk5uLeD/bK/Uqv9wlwuC8cWwK5jc+uCTpXXOmsssMs+jTLo2Zdj+dX5aQHMXkD1J7iNBEASVoY/ucgOhrGI28OscYt2oaur+NHYB2R34caMOI/IvCIJhMUHlj2FQ1itjU9sP5qCSSyTdafsKAEmfJxVqPasoIGlj4KlmPswR+RcEwdCodjrmcitm2w/m/x8GziNFuyBpX2AnYK8Gdf32oMlqOQiCYJiMeVOGpIUlLVr7DLwFuFXS9qSMczsXwg1rMhOAdxP25SAIKkjVE+WXMWW8AjhPaYaTgB/ZvkjSdGB+kmkD4BrbH8wymwMP2L5nAHMOgiDoiYpbMtor5qxc12lwfeUWMpcBm/Q0syAIgkFRcc0cIdlBEIw7hpUAvyy9RP4dKenBQoTfjvn6fLk46y2S7pD02UF+AUEQBJ1S8cpSHa2YtypG/mW+Yfurddd2A+a3vVbOx3y7pB/bvq+XiQZBEPSNai+YB2LKMLCwpEnAgsBzwOMDGCcIgqArhuUGV5ZeI/8OyUmMTpe0ZL52LvBv4CHgfuCrtv/VvykHQRD0RtXd5coq5k1trwfsABwsaXPgZGAlYF2SEv5abrsRqTDrfwArAp+Q9Jr6DiMkOwiCYVF1xVzKlFGM/JN0HrBRLSQbQNJ3gfPz6XuAi2w/Dzws6fekrP331PUZIdlBEAyFMW/KaBH596pCs3cAtZwY9wNbF9pvAtzZz0kHQRD0wiismJtF/v0gJ8A3cB/wn7n9ScAZkm4j7X2eYXta32ceBC3oJd/vI1NO7ONMyjHW5jvWqfZ6uWSi/EETpowgGF8MO1H+jEeeLa1zll1y/nmuxyPyLwiCcUi118yhmIMgGHcMKwF+WXoJyV5X0jW1a5JqOZqXzMVZp0m6TtKag/wCgiAIOmUUNv9q1IdkHwN80faFOU/GMcCWwOeAqbbfIWl10mbgNv2acBAEQa+MeXe5FhhYLH9eHPhL/rwG8DsA23cCK0h6RQ/jBEEQ9JeKZzHqJST7o8Cxkh4AvgrUssjdDLwTIJs3Xk2DCtoR+RcEwbCouF7uvhgrsCvwMds/k/Ru4DTgzcBXgOMkTQVuAW4ihWjPQUT+BUEwLCqejrn7kGzgfcChuclPgVNzm8eB/QCUolLupS4cOwiCYJio4pq565Bskk15i9xsa+CPuc0Skl6Sr78fuCIr6yAIgkowCqaMZiHZT5JMFpOAZ4Ca7fm1wJmSDNwGHND/aQdBEHRPxRfMPRVjvQpYv8H1PwCr9mV2QRAEA6Dq7nIR+RcEwbij6ivmspF/S0g6V9KducDqGyQdm8+n5Ui/JQrtPytpuqS7JG03uOkHQRB0TtUj/8r6MR9HSn6/OsmscQdwCbCm7bWBu8l+zJLWAPYAXgdsD3xL0sR+TzwIgqBb1MG/YVDGK2NxYHOSnzK2n7P9qO1f256Zm13D7CCSXYCzbT9r+15gOsm9LgiCoBKMwop5ReDvpOT3N0k6NbvNFdkfuDB/XgZ4oHBvRr4WBEFQCaruLldGMU8C1gNOtv16UgXsw2o3JX0emAmc1cnAEZIdBMHQqLhmLuOVMQOYYfvafH4uWTFL2hfYCdjGs0uhPAgsV5BfNl+bgwjJDoJgWFTdXa7titn2X4EHJK2WL20D3C5pe+DTwM62nyqITAb2kDS/pBWBVYDr+jzvIAiCrpmg8kc7JG2fPdCmSzqswf35Jf0k379W0grt+izrx/xh4Kwcan0PKRfGFGB+UlIjgGtsf9D2bZLOAW4nmTgOtj1XEqMgCIKh0acFc/Y4OwnYlmRdmCJpsu3bC80OAB6xvbKkPYCjgd1b9Vs2idFUYIO6yyu3aP9l4Mtl+g6CIJjX9NGUsREwPUdII+lskmdaUTHvAhyZP58LnChJBfPv3Niu/AEcOJZkx9p8Q7baY4bscA9SHqDrC8eBhXu7AqcWzvcBTqyTvxVYtnD+J2CpVmP2UsFkXnJg+yaVkh1r8w3Zao8ZskPE9im2NygcA3cjGyuKOQiCoIqU8UKb1SZn41wc+GerTkMxB0EQdM8UYBVJK2bniD1InmlFJpMKi0AyffzO2abRjLGSXa6XV4dhyI61+YZstccM2Ypie6akQ4CLgYnA6U6eaUcB19ueTEpn8QNJ04F/kZR3S9RGcQdBEATzmDBlBEEQVIxQzEEQBBUjFHMQBEHFCMU8TpE0QdK7hzT2imWuVZH8fVtsXssG44vKbf5Jemer+7Z/XqKPZYBXU/A6sX1FCfwkJaUAAB2kSURBVLmfk3ZQL7T9YvvZziG7KnAy8Arba0pam5Tg6b876afQ3+q272zTZj7bz9ddW8r2P0qOcb3t+lD7svN7EynMtPZ9FmDbrykhe6Pt9equ3WB7ruK+hfvrNbtHGvjGFrITgducKvB0jKQfAR8EXiC5Ry0GHGf72EHKZvmlgQ8AKzDn7/P+beReDaxi+zeSFgQm2X6izJhN+jvc9lFt2mxH8uP9re37Ctf3t316CzkBuwEmhSxvTQpjvhP4dqd/i6NAFRXzGfnjy4E3Ar/L51sBV9veqY18LUHI7aQ/BkgKY+cSY7+ZlKBpE+CnwBm27yo578uBTwHfccpbjaRbba9ZRr5Bf/fbXr7Jva2AHwALADeSQkTvy/fmUnotxvgK8A/gJ6Q82wDY/lcJ2TuBjwE3MPv7jO2mjvOSVieVHDuG9L2qsRjwKduvayF7af64AClvy82kh8HaJLekN7SZ7y+AD9u+v1W7JrJTba8raS9SbvLDgBucyqoNTDbLXw1cydzf55+1kPkAKXLupbZXkrQKScFtU2bMJn02/X3M9/8H2JT0+/g24Ju2T8j3Wv5OSvoW6e/9JcDjpORok4G3An+zfWi38x6rVM6P2fZ+AJJ+Daxh+6F8/irgeyW6eDuwmu1nuxj7N8BvcjmtPfPnB4DvAj+sX53WsZDt6zRnLZqZzRoDSDq+2S1giSb3ICm27bK/5K6kDH/72L6GzvJm1TJcHVy4ZqDtqhd4zPaF7ZvNwWqk/N1LkP54azxBWhU2xfZWMOutZj3bt+TzNZmdIKYVSwK3SbqOOR9CbR/YwHyS5iP9bp1o+3lJZVc0jWRLigLp9+oznQiQfp4bAdcC2P6jpJe3E5L0eLNbwIJtxN8GvD779R4J/EjSa2x/jPa/k5vZXit/n/4KvMr2c5J+TFL0447KKeYCy9WUcuZvQNMndoF7gPmAjhUzgKSXAXuTkpHcRKrMsikpcmfLFqL/kLQSSbGRFeZDLdpDWp1/oslc92wh9xLbtwHYPlfSHcDPJX2mNn4ZbPdi171U0rHAzynMv5VJwfYvgF9IeoPtP3Q57mo1pZz7vFXSa0vIfaHL8QC+A9xHWqVfkc0EzZRYGdnHOhj7fEk72r6gA5lns2IDZoUBl/m9eBTY0Pbf6m/kBUorJjnXALX9qKS3AadI+ilpJdyKmtzzkqbYfi6fz5Q07swYUG3F/FtJFwM/zue7A78pIfcUMFXSb5lTYXyknaCk80iruh8Abys8GH4i6fo24geTopVWl/QgcC+wVxuZKcCttq9uMJcjW8g9L+mVTkUMyCvnbYDzgZXajFkcYyHg48Dytg/Mr7yr2T6/hPjG+f+ijdok+2Cz8U5g9oNrrgdPmZ8RME3SqcAP8/lewLR2QrYvr7O7LkSK1GqL7eOB4tvNn7M5qQy/zPJAMgmQamS2RNITpO+VgM9JehZ4ntm2/FabiJdL+hywoKRtgQ8Bvywx1++T9gzmUszAj9rI/knSFrYvJ03wBeAASf8NvKuN7F8lLWL7Sdvb1y5KeiXwXIl5jxyVszEXyRuBm+XTK2yfV0LmfY2u2z6zhOxcKxNJ85cxi0ha0fa9SoVqJ9h+onathcxLgWc8ZwWYtmRb+N9t31x3fQlSYYJSubAl/YRku3xv3rBciGTHX7eT+ZSl2c+mRsmf0QLAQaTK7QBXkOpRPtNGrmu7q6T5ScplBebcgGu5GZZlO97o7BVJE0jJ2d9CUuQXk1JTDuyPPW8wYvvpBveWsT1XebkSfS4MLGz74T5McUxRacXcLUrJRFbNp3e1sQ0X5Rr9EZXaTBvGH2CvKHtlSLqpsGF5s+11SsguDhzBbAV5OXCU7U5e07siK4Hly27MZpmpZLtr4Wu9xfZaJWQvIpkf6jfgvtZCpuuNzrp+3kFKevNYPl8C2NL2/5WR7wYlG8hewGtsHyVpeeCVttuWiBuW7KhROVOGpKtsb1p4lZt1i/avcEjaEjiTZNcTsJyk97mFu1x+ZVqG9Or3emZvViwGLNRmvNof4OKa09VvMZIHQVsk7QR8ibldz9p9rV3JFXguK7maeWElytvmTyclAK/5Qu8DnAG0dHfM41xKA5un7aZmkILszsCxJLvlipLWJT0Q2m3idWt3hZTkfPv2zeag643OOo4ovilm++0RQFPFLOleGn9/y2zqAnwLeJFkljoqz/lnwIYVlh0pKqeYbW+a/1+0yy6+BryltppS8i/+MdBq5bodsC/JB/PrhetPAJ9rM14//gC/SVJot3T4utmtXI0jgItID6+zgDeRvg9lWMl20Xb4xbwqLcMnC58XIJkJWnqwFDiCtPK9DFLZM5ULTunW7gpwtaS1ipuO7ejTRic0DgJr93dbtPsvQPIRfmkHY25sez1JNwHYfiS/hVZZdqSonGLuA/MVX3Ft363khtOUbNs8U9K73MI/tIlsP/4AHyBtAnaqXLuVA8D2JZJuJPltCzjUJYNTgKclbWr7KpgVcDKXfbHJuDfUXfq9khtbGZ63/ZjmdDkr8/UfRrK73gL8J3ABcGrJMTcF9s0r0WeZ/WZSxhf5n3kjutvAo+slfZ1U8BPSJnP9928OPLcv+Tcl3QAcXnLM55WCcmpvUkuTVrJVlh0pRlExX1+3a783qU5XUyTtbfuHwAqSPl5/3/bXG4jVc5Okg0lmjVkmDLeJ0Mp8GrhAKUil6EnSbtxu5YosADxC+l1YQ1KpKEnSBtyZ2dYsUp7ZfcsMmDc9a0wgvc0sXnK+t0l6DzAxb+B9BJjLq6Uep+ix7+ajU3boQqbGd8mBR3ke05SiAcsq5g+TXP1+QlJYl5BW+03RnFGSE0gr6E7+1o8HzgNeLunLpOTu/1Vx2ZFiFBXzQaRVRc316kqS7aoVC+f/F2lwr+xq9AekENLtSPaxvYA7Ssp+GXiSpCQ7eXXrVg6YI0ryNmavTEzydGiJU+X0dZRzP9gu69cLacVXcwWbSXItPKCk7IeBz5MeRD8meRx8qZ2QegghpwPf8AZ0HHhUx462DytekLQbKTK1GcVNyZmk/ZZSeVGyR8e9pIf+NqTv09ttt/1dHpbsKDKSXhk18spsWdtt/Vxz+zNJr/OP5vMlga+VWfXWPBskTbO9djafXGl7kxKyXYVudytXkL8LWLuMO2BBZm/bP2z0ZgEdr9bnGeoihLwgewuzHyQLACuSvH3aelZIuhA4BPhptp/uChxgu9QqvBdPoW4peumMFdlRY+RWzJIuA3YmfW03AA9LutopNLQda9eUMszafCj7i1JzyXtUKUz4r6T4/zJcIOkttn9dsn2vcjW6iZKsvV10uzlbW/Fd5OTr/V+kHBL/7daJiL5p+6OSfkljj4N2XhndhJDX+p7DpS6bClqaEwp0E3iEpB2AHYFlNGfo/mK0D/Xv2u8681tJ7wJ+3sX+xbBkR4qRWzEXVq7vJ4V1H1FbxZaQvZnkI/pIPn8pcHlJX9f3k1x71iLl9FgE+ILt75SQfYKk8DqJ7upariD/M2AdoOMoyV4ovFVsSrK1HgscbnvjFjLr275B0haN7jtHnLWQ/wop0q90CHmb/sr6QNfmXQw82sltoislrQOsSzKLFTftngAurf2ONpHt2O+6Tr72ezUTeIYOfq+GJTtqjKJivoUU8XQm8HnbUzpQzO8lucfV7He7AV+2/YMWMo1e6WsGRVf11R56jpI8hqRUnya53K0NfCxvoraTrT08/5fk6vejQb/GanZ2uiJ2Od/p4s94AmmF/zLb25WQvZEUWXlrPt+D9H1q+hCqk58rtWsJmZ5MXMHwGTlTBmmFcTFwVVbKrwH+WEbQ9veVcmLU/ljfafv2NmK1V/rVSI7wtdLlbwNKRyxle/YqzOnRUSaHdFdyuV1bBdyCt9j+tFJk2n0kf+ormO0N04oHJX0H2BY4Or96tyzaULDzznWLEq5rztnpuqRotpkJ/Ir0dlSGXYFzsyfJZsB7SQuHsqyQH2BrMOfPuNWmZcd+15CCpWzfqSa5r9uYmoYiO6qM3Ip5WEi6AnirczJySYsCv7K9eWvJWWaQQ0kBLlNJfsV/aLea61auIN9LsvtbnfxyTwXOtX2RyodzLwRsT1ot/1EppetarWzlSgmImmL7z23G7MruquRXe7TtT7Zq16aPVUmRevcD73CDfBItZK8iBdV8g/Sw349kEmnqkyzpdmBlkj27tN+1pFOckll1/HYxLNlRZeQUs1KSmwPozp+4l3Hn8HDIimCa7dVKyN5CWm1f45RUfXXgf2y3DG/uVq4g34unwldIOYafJkXiLQGc38Er+qakTG9nKAUSLOIWCZ/qZF+ZxzQwxTnLXhuZru2ukv7gNon4G8jUr/Bfnsd/No9bNlH+DbbXL9q01b7aS8OHWLuHV1AdRtGU0Ys/cS98H7hOKXUoJKX1vZKyz9h+RhJK2ezulNRWofcgV6MXT4XDsp35MdsvSPo3qRxQW5RyPWxAMv+cQfIM+SEpJLyd7PtJm2G/I60ET5B0lFuULsp0k++ixlRJk0l7D8Uk+63KnLWstNMBzyr5+P5R0iHAgzT2t5+F7T83evCVHTAvbj5Eing0KRbg226TwW+YsqPGKK6Yu/Yn7sPY6zFnmtKbSsqdR3pF/SjJvv0IKbR8x0HIFeQ79lSQtLXt36lJbcY2yqrWx1Tg9cCNnp3prewG7V3AG2ureqXCBle3ezORdApwQqd21yx7RoPLLvMWJmkTUr3BmolrMeC1tq8tOfaGpIXFEqRAmsWBY5yq1TSTmfXgs72qpP8g+VG3ffBl+XNI3h+1/YL3AEvY3q2qsqPGKCrm62xvlG2+HyL5E19Xxm5aBZTcwRYn+fmWThLejVyX9sAvOrkg9qKsaj+jG52CLhYm2cbLKOarSS6Nz+XzlwCX2X5jG7mu7K5lkPRZ2//b5N5NpFJYtfwPE0g1CgcZINL1gy+3vd32Gu2uVUl21BhFU8Yp2VPhCyQPiUUon7xlaDR49VyGpEQGIgfdeSrYPiL/v1+nsgCSRCqX9B1gCaUE9vtTPofFdOBapeKqJplPpim7tLm5e2Iv+S7asRvQUDGTFj+zVj+2X1RKOVoKSRuQQtDrq763UrLP2bZyXcL84OuEGyVtUluVS9qYNvlmKiA7Uozcinks0u2rZw9yPYdVK1VFPsZzhq9/wnbbpDN5Y+zjFCps2L6knVyWPaLVfdtfrGu/mO3HNWfipGL7thXBS8ypqQ+2UvHYy4CT86UPAVvZfnvJvu8iJUG6hUKmtVYbeZI+SXKh3Jb0wNgf+JFz1eoSY95Bsv/XKoovD9xFchVs+ZYxLNlRY+RWzJJeAfwP8B+2d5C0BvAG26cNeWqteAf51RPA9l+U3O0GJddzWDWwg+1Zuaqdwtd3pFw2sBuBR21/qm3LOmqKN9tqXbPdtuBHpI24YuKkWd1RriJ422m1uPdBUta0/8rtfksqcVWWv9ue3L7ZXPO5ilQwdlVSVGWpB1+m203SYcqOFCOnmEmeEGeQXv8A7ialTKyyYu721bMrOc8OEz+6hx3viSrUQ1SqhDJ/SdmNgb0k/Zk5vRzK2Jg3IP18F83njwH7e+4cz7U+a94RvyeVv7rS9p0l51kWNbvhVK9ujx76PkLJV7w+bL7VJusipFXyv0i/+6WSeBX6/nN+A1qOOc0nbQM9hiU7aoyiYl7K9jmSPgvUSqC/0E5oyJzTpc21W7kat0r6G8kt6UpStGTZmn1nkZLO1DYB9yOFwZehbShzC04HPmT7SphlYz+DFBLeitNIHjMnKJXQupGkpI9rN6Ckl7m1b/dcKTglfdr2MSpUBi/i8vlI9gNWJ7kUFlOzNlXM+a3ii0pJ+XcnVW+ZYfvNZQaU9CVSbu0/FebesgL6sGVHjVFUzP/OLlS1VeQmJMf+KrM0cC7p1XM10mZlmT+ibuUAsL2yUsHLzYC3AidJetQlqmTbPlop6VNtvC/ZvrjkuL0EOrxQU8q5r6sktc1vbPvS7KmzIbAVycSwJtBWMQPXZE+HM4ALi5t5ue//aSBT853vdfNqQ5cIUmrCwySvpH9SPtMhpNzNK3XiFVQB2ZFi5Db/lHyJTyD90d1KUl67umRO5mGgxjl327o3dStXaLssSSlvQcoy9y/SqrmZh0G9/KtJHiG/UQqznljC5tsTkr4JLEhKkm/SivAZsu9rs9depfJOCwN/YPbbwcMlxxTpAbQ/SbGfA3zP9t0lZFey/acy4zSRPwM41u1zthRlPkRSckuTVvPndCj/M+Cgst+fKsiOGqOomHcjJTFajpQbYWNS+s3K2akkHUTapX8N6fWtxqLA723v3U+5Bv28CEwhhXH/osO5f4C0ifVS2ysplXn6tu1tOumnU9TY97qG3cQHW9I3SCWsniXZm68g+U6XzluR+9mK9BBYGLgZOMwtaj0qlf1alvR9vpIUeFQ6yCV7KqxEB/7XSkmPfuJUZaZjsh3/F6SFTdGu3S7n9dBkR41RVMzFXL9fAr5Km1y/w0KpXt6SJJemYvmgJ1q5cXUr16CfdUjhr5uTXJP+SMo/3XajNL/abwRc69lBDKVyFA+T7LWyL6lS9yttt92wzKaxvYF9gL+R7NWTSfmSf2q7ZZVupSCYDYEtSYVgF7Fdqmq12uS9kLSkW+Rm7gZJt5FqFNa76LXMeT1M2VFjFG3MtY2+twLftf0rSWULX85T8kbbY8Ce80KuQT83S/oTadW9GUn5bEE5D5ZnbT+nXMtOKWhinjzlJb2VuZNUtcsSdwjpa1yflKb0dNIKtgx/IOVgebvtGYXr10v6dptxN83jbkZO9NTBuGXs8b8l5YfuJ0/ZPr59s0rJjhSjqJg7zvU7XlHKPT0/qcr0lcDmHWzMXS7pc8CCkrYlmVZ+OZiZziYrwoVIG3inkvIdl8l7vQDwdeAG250UQ4UUwGNJi0latGhHt310G9nLSD7U/wtcMICNraauej1wZTaHTKbzai/Dkh0pRtGU0XGu3/GKpKVt/73F/fe5STJ9pZwPB1CI3gNOrfdY6DcFU1Xt/0VInhKbtRXufsyi77SAR2nhO10nuwQpa97mJHPGiyTb9hf6NLe+F2Yt2PFrP8uaXbuMy9tQZEeNkVsx236Kgo+n7YeAh4Y3o+rSSilnDqWJb7LtF0k+0534TfeD2mbdU0oh6P8EXjXgMbv1ncb2o5LuIW1GLwu8keSTXGUua3Ct7AN3WLIjxcgp5qCvzPWarOYlnoDyCeB74Py8Cj2WFCRiBv9w6Mp3GiAr5TtJpqKTgf3KmDMkrehyhQMGYcp4svB5AVJIe9mc5sOSHSlGzpQR9I8mftI1L4GD8/+1QrV7k147i14ig57f/MACLkQrStrWneWFaNV/7Wt/Lw18p203TAJV18eE/HbR7H7DlKGaXbnkt61cECW9tBNPnG7I3+eLbW85VmTHOqGYg6aodda0ue4Nwt7ZKf2cQ7c+0x2O0XC+SnmcfwocRKr3Vz/4PKu+rpS/YortlceK7FgnTBlBK37f4p4kvcn27/PJG6mG90vfXu1dMl91q03SMuJNru9BKk82id6yAHZMnblqIimCsKU74rBlR41YMY9jJB1K2sR6guR69npSJFtbDxZJ65M2xRbPl2qeCkN1bRrGqr2XMdvJStrBXdZl7Ja6oJaZwN/KuhgOS3bUiBXz+GZ/28dJ2o4USbgPyWbcVjFnV7F1chRiLehlFj2uIscavazS28leLenrJHc7SKlLj6r/fveTDnzZKyM7alTh1TMYHjWlsCPwA9u30aGSsf1YEyVxaK+T65L7hjBm09fOHM7dirlShtZxOumN5t35eJz0lhOMMGHKGMfkzGXLACuSsstNJBU2Xb8PfTfdOOyyv4ZVuWu4RHXuQdFmk/SPQNOUoSX6nuq6NKyNrgWjRZgyxjcHkBLx3GP7KaW6eF0VWW1Av5/4b6MuIqzu89AUM603SVdldsrQ4yWVThmaeVrSpravApD0JmYH2QQjSqyYxzH5j3yq7X9L2puUDOe4ftj6BrBi/kThtFi7zzBY97HsT/suYAXmLHnUkcdApylDs8w6wPeZvcn6CPA+Vzi/eNA7sWIe35xM2sBbB/gEyTPj+6QMc73SahXZDYvk/1cj5Zz4BUk5v41ySYx64RekbH43UEiuU4YGKUM/TCFlKMmM1BTbN5N+Rovl88fr+h9Pm6zjhlgxj2NqrlqSDgcetH1aWdevXlztepzzFcBbaxnecn7lX9nevLVkT2PeanvNLmXvJnm6nOE5U4Yi6TMlstO163/oQT1B/wmvjPHNE0pFa/cBfpUzxpVNsLN/Xr29hdmudl8ZzDTn4BVAMdfEc/naILlaUrcFAFaz/SXg8fwQmUWvSjkziFwZwZAJU8b4ZnfgPSQl+1elwqzHlpSdy9VOtaz5g+X7wHWSzsvnbwe+N+AxNwX2lVS6vFOB9bP3y6KkaMnSKUNLEq+8I0iYMsY5kl5BstkCXOfyBUoH5mpXYuz1SBVBINXQu2nA47Us79RGdhpwcF3K0G/1KwtfvzdZg2oQK+ZxjKR3k1bIl5FWgSdI+pTtc0uID9LVriU57Hvgod+SFsvmml4qf/eSMnQCqcL7OS2a9XuTNagAsWIex0i6Gdi2tkqWtDTwG9vrlJAdmKtdVZB0vu2dsgmj6KIHyZTxmhayPacMzf1cb3uDrr6AYMwSinkco7qq1nmFdrNLVLrOr+jrkKp4fI/kmfFu2/1wtasUkn5IylFxpe07S8r0JWWopK8A/wB+Avy70MFAczAHwyUU8zhG0jEk5frjfGl3YJrtz5SQ7drVbqyRA0Nqla5XIplRrrR9XB/6bumHnFfr9bRcrQdjn1DM4xhJRwPXkrwOIJU/2qSkYr4cuIgUarwZ8DAlV9tjEUkTSZukWwEfBJ62vXof+h3Jh1nQG6GYxzFNSkdNK+MxIOmVJFe7KbavzK52W9r+/oCmOzQk/ZYURv0H0sPrqrLeKyX6bulVoVT1/ePA8rYPlLQKyTf6/H6MH1STCDAZh0g6KFeLWE3StMJxL1AqB4PtvwJnAYtL2om0oTVySjkzjRTIsibJpr6mpAX71He7ldEZeew35vMHgf/u09hBRYkV8zgkJ7dfEvhfoFg89Ymym0oNXO02A8q62o1JcuTevsAngVfanr8PfbZbMV9ve4NiO0k3l/GcCcYu4cc8DsmJ7R8D9uyhm88DG9a72gEjp5glHUJ68KxPSsR/Osmk0Q/a+SE/l1fnznNZiQ4TKQVjj1DMQbdMqLOz/pPRNY0tAHwduKHTGnTtUobaPqRNF0eSNlmXk3QW8CbSqj0YYcKUEXRFL6524wlJFzE7ZegLteu2v9ZBHy8DNiGZjK6x/Y9+zzOoFrFiDrrFwHeY7Wp3Ckl5BHOyrO3tuxWW9DPgNFJZqhf7N62gysSKOeiKXlztxhOSTgFOsH1Ll/JvJuUg2YSUWP8M23f1cYpBBQnFHHSEpIOADwGvAf5UuLUo8Hvbew9lYhVF0u3AykA3KUOL/SxO2qz9PPAA8F3gh7af7++MgyoQijnoiH642o0nekkZWuijWJ7qLyT/8U2BtWxv2YdpBhUjFHMQDIBaytCcDnUuOvAXP49U5/AHpOraDxXuRea5ESUUcxAMgF5Shtb1s5XtVpnqghEkFHMQDJBuUoY26GNNYA2SPzUAIxz+HhCKOQgGSq8pQyUdAWxJUswXADuQkijtOpAJB5UgFHMQDJheUobmZFPrADfZXifXaPyh7W0HNuFg6ESASRAMkAYpQ2flFynJ07ZflDRT0mKkvNfLDWCqQYUY1dwGQVAVek0Zer2kJUh+yzeQTCF/6Pssg0oRpowgmAf0I2WopBWAxWyXypkdjF1CMQfBAGmQMvRK0ubf79rItSw3ZfvGfs0xqB5hYw6CwdJtytBi9rni6kn5vFSV7WBsEivmIKgw2R79IVIItkkr7pNtPzPUiQUDJRRzEFQYSecAj5PyY0AqgLu47XcPb1bBoAnFHAQVRtLtttdody0YLcJdLgiqzY2SZhUgkLQxcP0Q5xPMA2LFHAQVRtIdpOxy9+dLywN3ATPpIq9zMDYIxRwEFaZZPucaneR1DsYOoZiDIAgqRtiYgyAIKkYo5iAIgooRijkIgqBihGIOgiCoGKGYgyAIKsb/AzuENF2mACx9AAAAAElFTkSuQmCC\n",
+            "text/plain": [
+              "<Figure size 432x288 with 2 Axes>"
+            ]
+          },
+          "metadata": {
+            "tags": [],
+            "needs_background": "light"
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "k4107hGmfLX9"
+      },
+      "source": [
+        "data.drop('umpire3',axis=1,inplace=True)"
+      ],
+      "execution_count": 7,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xXnUnV0qfr2t",
+        "outputId": "a28c0a97-2ae3-491a-cab8-29396dfdb68f"
+      },
+      "source": [
+        "print(data)"
+      ],
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "      id  season  ...          umpire1          umpire2\n",
+            "0      1    2017  ...      AY Dandekar         NJ Llong\n",
+            "1      2    2017  ...   A Nand Kishore           S Ravi\n",
+            "2      3    2017  ...      Nitin Menon        CK Nandan\n",
+            "3      4    2017  ...     AK Chaudhary    C Shamshuddin\n",
+            "4      5    2017  ...              NaN              NaN\n",
+            "..   ...     ...  ...              ...              ...\n",
+            "631  632    2016  ...   A Nand Kishore     BNJ Oxenford\n",
+            "632  633    2016  ...     AK Chaudhary  HDPK Dharmasena\n",
+            "633  634    2016  ...        M Erasmus    C Shamshuddin\n",
+            "634  635    2016  ...        M Erasmus        CK Nandan\n",
+            "635  636    2016  ...  HDPK Dharmasena     BNJ Oxenford\n",
+            "\n",
+            "[636 rows x 17 columns]\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "xwUw5AMKfuLP",
+        "outputId": "2cf507e4-6373-4bbf-e8b3-a471f694d493"
+      },
+      "source": [
+        "data[\"season\"].unique()\n",
+        "data[\"season\"].value_counts()"
+      ],
+      "execution_count": 9,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "2013    76\n",
+              "2012    74\n",
+              "2011    73\n",
+              "2016    60\n",
+              "2014    60\n",
+              "2010    60\n",
+              "2017    59\n",
+              "2015    59\n",
+              "2008    58\n",
+              "2009    57\n",
+              "Name: season, dtype: int64"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 9
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 350
+        },
+        "id": "lPH2PiTHg5pJ",
+        "outputId": "07f539ca-6cfa-4f06-ae06-f1bd387f0396"
+      },
+      "source": [
+        "sns.countplot(data[\"season\"])"
+      ],
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "/usr/local/lib/python3.7/dist-packages/seaborn/_decorators.py:43: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.\n",
+            "  FutureWarning\n"
+          ],
+          "name": "stderr"
+        },
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "<matplotlib.axes._subplots.AxesSubplot at 0x7fd02fa5ea90>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 10
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "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\n",
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ]
+          },
+          "metadata": {
+            "tags": [],
+            "needs_background": "light"
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 405
+        },
+        "id": "-Rszez1tg-bD",
+        "outputId": "adcdf43c-2a60-4dcf-fc63-16736a6e6905"
+      },
+      "source": [
+        "plt.figure(figsize=(10,6))\n",
+        "sns.countplot(y=data['city'])"
+      ],
+      "execution_count": 11,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "<matplotlib.axes._subplots.AxesSubplot at 0x7fd0346e92d0>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 11
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "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\n",
+            "text/plain": [
+              "<Figure size 720x432 with 1 Axes>"
+            ]
+          },
+          "metadata": {
+            "tags": [],
+            "needs_background": "light"
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "cQf96YouhgZZ",
+        "outputId": "60f1523c-a992-444e-ed55-a7d019c3a23d"
+      },
+      "source": [
+        "data['win_by_runs'].max()"
+      ],
+      "execution_count": 12,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "146"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 12
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 80
+        },
+        "id": "2wwxwKcRmF66",
+        "outputId": "39b18f5b-5e7f-4b39-ea9a-d2c6b5dbb258"
+      },
+      "source": [
+        "data[data['win_by_runs'] == 146][['season', 'city', 'team1', 'team2','win_by_runs', 'winner']]"
+      ],
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>season</th>\n",
+              "      <th>city</th>\n",
+              "      <th>team1</th>\n",
+              "      <th>team2</th>\n",
+              "      <th>win_by_runs</th>\n",
+              "      <th>winner</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>43</th>\n",
+              "      <td>2017</td>\n",
+              "      <td>Delhi</td>\n",
+              "      <td>Mumbai Indians</td>\n",
+              "      <td>Delhi Daredevils</td>\n",
+              "      <td>146</td>\n",
+              "      <td>Mumbai Indians</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "    season   city  ... win_by_runs          winner\n",
+              "43    2017  Delhi  ...         146  Mumbai Indians\n",
+              "\n",
+              "[1 rows x 6 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 20
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "zH2tBbu9maqi",
+        "outputId": "27e9aebc-1753-4372-9fff-7192fad5aa3d"
+      },
+      "source": [
+        "data['winner'].value_counts()"
+      ],
+      "execution_count": 22,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Mumbai Indians                 92\n",
+              "Chennai Super Kings            79\n",
+              "Kolkata Knight Riders          77\n",
+              "Royal Challengers Bangalore    73\n",
+              "Kings XI Punjab                70\n",
+              "Rajasthan Royals               63\n",
+              "Delhi Daredevils               62\n",
+              "Sunrisers Hyderabad            42\n",
+              "Deccan Chargers                29\n",
+              "Gujarat Lions                  13\n",
+              "Pune Warriors                  12\n",
+              "Rising Pune Supergiant         10\n",
+              "Kochi Tuskers Kerala            6\n",
+              "Rising Pune Supergiants         5\n",
+              "Name: winner, dtype: int64"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 22
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "dUCEBdlcoORu"
+      },
+      "source": [
+        "data.replace({'Delhi Daredevils': 'Delhi Capitals'}, inplace = True)\n"
+      ],
+      "execution_count": 25,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 840
+        },
+        "id": "VpdBpeRAoh9_",
+        "outputId": "f2e0cb08-1f53-463d-d725-11300fb49901"
+      },
+      "source": [
+        "data"
+      ],
+      "execution_count": 26,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>id</th>\n",
+              "      <th>season</th>\n",
+              "      <th>city</th>\n",
+              "      <th>date</th>\n",
+              "      <th>team1</th>\n",
+              "      <th>team2</th>\n",
+              "      <th>toss_winner</th>\n",
+              "      <th>toss_decision</th>\n",
+              "      <th>result</th>\n",
+              "      <th>dl_applied</th>\n",
+              "      <th>winner</th>\n",
+              "      <th>win_by_runs</th>\n",
+              "      <th>win_by_wickets</th>\n",
+              "      <th>player_of_match</th>\n",
+              "      <th>venue</th>\n",
+              "      <th>umpire1</th>\n",
+              "      <th>umpire2</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>1</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Hyderabad</td>\n",
+              "      <td>2017-04-05</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>35</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Yuvraj Singh</td>\n",
+              "      <td>Rajiv Gandhi International Stadium, Uppal</td>\n",
+              "      <td>AY Dandekar</td>\n",
+              "      <td>NJ Llong</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>2</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Pune</td>\n",
+              "      <td>2017-04-06</td>\n",
+              "      <td>Mumbai Indians</td>\n",
+              "      <td>Rising Pune Supergiant</td>\n",
+              "      <td>Rising Pune Supergiant</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Rising Pune Supergiant</td>\n",
+              "      <td>0</td>\n",
+              "      <td>7</td>\n",
+              "      <td>SPD Smith</td>\n",
+              "      <td>Maharashtra Cricket Association Stadium</td>\n",
+              "      <td>A Nand Kishore</td>\n",
+              "      <td>S Ravi</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>3</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Rajkot</td>\n",
+              "      <td>2017-04-07</td>\n",
+              "      <td>Gujarat Lions</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>0</td>\n",
+              "      <td>10</td>\n",
+              "      <td>CA Lynn</td>\n",
+              "      <td>Saurashtra Cricket Association Stadium</td>\n",
+              "      <td>Nitin Menon</td>\n",
+              "      <td>CK Nandan</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>4</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Indore</td>\n",
+              "      <td>2017-04-08</td>\n",
+              "      <td>Rising Pune Supergiant</td>\n",
+              "      <td>Kings XI Punjab</td>\n",
+              "      <td>Kings XI Punjab</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Kings XI Punjab</td>\n",
+              "      <td>0</td>\n",
+              "      <td>6</td>\n",
+              "      <td>GJ Maxwell</td>\n",
+              "      <td>Holkar Cricket Stadium</td>\n",
+              "      <td>AK Chaudhary</td>\n",
+              "      <td>C Shamshuddin</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>5</td>\n",
+              "      <td>2017</td>\n",
+              "      <td>Bangalore</td>\n",
+              "      <td>2017-04-08</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Delhi Capitals</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>bat</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>15</td>\n",
+              "      <td>0</td>\n",
+              "      <td>KM Jadhav</td>\n",
+              "      <td>M Chinnaswamy Stadium</td>\n",
+              "      <td>NaN</td>\n",
+              "      <td>NaN</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>...</th>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "      <td>...</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>631</th>\n",
+              "      <td>632</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Raipur</td>\n",
+              "      <td>2016-05-22</td>\n",
+              "      <td>Delhi Capitals</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>0</td>\n",
+              "      <td>6</td>\n",
+              "      <td>V Kohli</td>\n",
+              "      <td>Shaheed Veer Narayan Singh International Stadium</td>\n",
+              "      <td>A Nand Kishore</td>\n",
+              "      <td>BNJ Oxenford</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>632</th>\n",
+              "      <td>633</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Bangalore</td>\n",
+              "      <td>2016-05-24</td>\n",
+              "      <td>Gujarat Lions</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>0</td>\n",
+              "      <td>4</td>\n",
+              "      <td>AB de Villiers</td>\n",
+              "      <td>M Chinnaswamy Stadium</td>\n",
+              "      <td>AK Chaudhary</td>\n",
+              "      <td>HDPK Dharmasena</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>633</th>\n",
+              "      <td>634</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Delhi</td>\n",
+              "      <td>2016-05-25</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>Kolkata Knight Riders</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>22</td>\n",
+              "      <td>0</td>\n",
+              "      <td>MC Henriques</td>\n",
+              "      <td>Feroz Shah Kotla</td>\n",
+              "      <td>M Erasmus</td>\n",
+              "      <td>C Shamshuddin</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>634</th>\n",
+              "      <td>635</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Delhi</td>\n",
+              "      <td>2016-05-27</td>\n",
+              "      <td>Gujarat Lions</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>field</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>0</td>\n",
+              "      <td>4</td>\n",
+              "      <td>DA Warner</td>\n",
+              "      <td>Feroz Shah Kotla</td>\n",
+              "      <td>M Erasmus</td>\n",
+              "      <td>CK Nandan</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>635</th>\n",
+              "      <td>636</td>\n",
+              "      <td>2016</td>\n",
+              "      <td>Bangalore</td>\n",
+              "      <td>2016-05-29</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>Royal Challengers Bangalore</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>bat</td>\n",
+              "      <td>normal</td>\n",
+              "      <td>0</td>\n",
+              "      <td>Sunrisers Hyderabad</td>\n",
+              "      <td>8</td>\n",
+              "      <td>0</td>\n",
+              "      <td>BCJ Cutting</td>\n",
+              "      <td>M Chinnaswamy Stadium</td>\n",
+              "      <td>HDPK Dharmasena</td>\n",
+              "      <td>BNJ Oxenford</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "<p>636 rows × 17 columns</p>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "      id  season  ...          umpire1          umpire2\n",
+              "0      1    2017  ...      AY Dandekar         NJ Llong\n",
+              "1      2    2017  ...   A Nand Kishore           S Ravi\n",
+              "2      3    2017  ...      Nitin Menon        CK Nandan\n",
+              "3      4    2017  ...     AK Chaudhary    C Shamshuddin\n",
+              "4      5    2017  ...              NaN              NaN\n",
+              "..   ...     ...  ...              ...              ...\n",
+              "631  632    2016  ...   A Nand Kishore     BNJ Oxenford\n",
+              "632  633    2016  ...     AK Chaudhary  HDPK Dharmasena\n",
+              "633  634    2016  ...        M Erasmus    C Shamshuddin\n",
+              "634  635    2016  ...        M Erasmus        CK Nandan\n",
+              "635  636    2016  ...  HDPK Dharmasena     BNJ Oxenford\n",
+              "\n",
+              "[636 rows x 17 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 26
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rz6AN1HAo5gR",
+        "outputId": "2cf78b11-12b0-4f40-dae4-f5863ab57a5a"
+      },
+      "source": [
+        "data['umpire2'].value_counts()"
+      ],
+      "execution_count": 27,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "SJA Taufel         54\n",
+              "C Shamshuddin      50\n",
+              "S Ravi             49\n",
+              "RJ Tucker          38\n",
+              "CK Nandan          36\n",
+              "RB Tiffin          30\n",
+              "VA Kulkarni        28\n",
+              "SK Tarapore        26\n",
+              "BNJ Oxenford       25\n",
+              "AM Saheba          23\n",
+              "M Erasmus          22\n",
+              "RE Koertzen        21\n",
+              "DJ Harper          18\n",
+              "AK Chaudhary       15\n",
+              "HDPK Dharmasena    14\n",
+              "SL Shastri         13\n",
+              "K Srinath          13\n",
+              "NJ Llong           13\n",
+              "K Hariharan        11\n",
+              "S Asnani           11\n",
+              "CB Gaffaney        10\n",
+              "VK Sharma           9\n",
+              "BR Doctrove         8\n",
+              "RK Illingworth      8\n",
+              "Nitin Menon         8\n",
+              "PR Reiffel          8\n",
+              "IL Howell           7\n",
+              "SS Hazare           6\n",
+              "PG Pathak           6\n",
+              "GA Pratapkumar      6\n",
+              "AL Hill             6\n",
+              "I Shivram           6\n",
+              "S Das               5\n",
+              "A Nand Kishore      5\n",
+              "TH Wijewardene      5\n",
+              "BG Jerling          4\n",
+              "AV Jayaprakash      4\n",
+              "K Srinivasan        3\n",
+              "A Deshmukh          3\n",
+              "SD Ranade           2\n",
+              "MR Benson           2\n",
+              "SJ Davis            1\n",
+              "JD Cloete           1\n",
+              "SD Fry              1\n",
+              "Subroto Das         1\n",
+              "Name: umpire2, dtype: int64"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 27
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ViFFgJUepE7y"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
